@@ -49,3 +49,7 @@ journalctl --user -u node-modules-gc.service
 ## Why?
 
 I usually have a couple GB of `node_modules` folders lying around in various projects that I no longer work on, and as great as [npkill](https://github.com/voidcosmos/npkill) is, I don't run it as much as I should. Inspired by the `nix.gc.automatic` flag, this module automates the cleanup process, so that old `node_modules` folders are pruned regularly.
+
+## License
+
+MIT © Matthew Hrehirchuk
