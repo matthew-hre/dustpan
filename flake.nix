@@ -5,6 +5,11 @@
   inputs.home-manager.url = "github:nix-community/home-manager";
 
   outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    ...
+  }: {
     homeManagerModules.node-modules-gc = import ./modules/node-modules-gc.nix;
   };
 }
