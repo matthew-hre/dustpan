@@ -7,10 +7,12 @@
 with lib; let
   cfg = config.nodeModules.gc;
 
-  pruneScript = pkgs.writeShellScriptBin "prune-node-modules" ''
+  pruneScript = pkgs.writeShellScriptBin "node-modules-gc" ''
     SEARCH_DIRS=(${concatStringsSep " " cfg.directories})
     for dir in "''${SEARCH_DIRS[@]}"; do
-      find "$dir" -type d -name "node_modules" -prune -mtime +${toString cfg.olderThanDays} -exec rm -rf {} +
+      echo "Pruning in: $dir"
+      find "$dir" -type d -name "node_modules" -prune -mtime +${toString cfg.olderThanDays} \
+        -print -exec rm -rf {} +
     done
   '';
 in {
@@ -43,16 +45,16 @@ in {
   config = mkIf cfg.enable {
     home.packages = [pruneScript];
 
-    systemd.user.timers.prune-node-modules = {
+    systemd.user.timers.node-modules-gc = {
       Unit.Description = "Scheduled cleanup of node_modules folders";
       Timer.OnCalendar = cfg.frequency;
       Timer.Persistent = true;
       Install.WantedBy = ["timers.target"];
     };
 
-    systemd.user.services.prune-node-modules = {
+    systemd.user.services.node-modules-gc = {
       Unit.Description = "Run node_modules pruning";
-      Service.ExecStart = "${pruneScript}/bin/prune-node-modules";
+      Service.ExecStart = "${pruneScript}/bin/node-modules-gc";
     };
   };
 }
