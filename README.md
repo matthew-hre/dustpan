@@ -22,7 +22,7 @@ And use it in your Home Manager configuration:
         inputs.node-modules-gc.homeManagerModules.node-modules-gc
     ];
 
-    nodeModules.gc = {
+    services.nodeModules.gc = {
         enable = true;
         directories = [ "$HOME/dev" "$HOME/Projects" ];
         olderThanDays = 30;

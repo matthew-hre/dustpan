@@ -5,7 +5,7 @@
   ...
 }:
 with lib; let
-  cfg = config.nodeModules.gc;
+  cfg = config.services.nodeModules.gc;
 
   pruneScript = pkgs.writeShellScriptBin "node-modules-gc" ''
     SEARCH_DIRS=(${concatStringsSep " " cfg.directories})
@@ -16,7 +16,7 @@ with lib; let
     done
   '';
 in {
-  options.nodeModules.gc = {
+  options.services.nodeModules.gc = {
     enable = mkOption {
       type = types.bool;
       default = false;
