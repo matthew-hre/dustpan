@@ -1,5 +1,5 @@
 {
-  description = "Home Manager module for pruning old node_modules folders";
+  description = "Home Manager module for pruning old build and dependency folders";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   inputs.home-manager.url = "github:nix-community/home-manager";
