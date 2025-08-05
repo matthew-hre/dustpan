@@ -26,16 +26,6 @@ And use it in your Home Manager configuration:
         enable = true;
         directories = [ "$HOME/dev" "$HOME/Projects" ];
         foldersToClean = [ "node_modules" "__pycache__" "target" ".cache" ];
-```nix
-{inputs, ...}: {
-    imports = [
-        inputs.dustpan.homeManagerModules.dustpan
-    ];
-
-    services.dustpan = {
-        enable = true;
-        directories = [ "$HOME/dev" "$HOME/Projects" ];
-        foldersToClean = [ "node_modules" "__pycache__" "target" ".cache" ];
         olderThanDays = 30;
         frequency = "weekly";
     };
