@@ -10,6 +10,6 @@
     home-manager,
     ...
   }: {
-    homeManagerModules.node-modules-gc = import ./modules/node-modules-gc.nix;
+    homeManagerModules.dustpan = import ./modules/dustpan.nix;
   };
 }

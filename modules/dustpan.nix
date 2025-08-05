@@ -5,9 +5,9 @@
   ...
 }:
 with lib; let
-  cfg = config.services.nodeModules.gc;
+  cfg = config.services.dustpan;
 
-  pruneScript = pkgs.writeShellScriptBin "node-modules-gc" ''
+  pruneScript = pkgs.writeShellScriptBin "dustpan" ''
     SEARCH_DIRS=(${concatStringsSep " " cfg.directories})
     FOLDERS_TO_CLEAN=(${concatStringsSep " " cfg.foldersToClean})
     
@@ -21,7 +21,7 @@ with lib; let
     done
   '';
 in {
-  options.services.nodeModules.gc = {
+  options.services.dustpan = {
     enable = mkOption {
       type = types.bool;
       default = false;
@@ -56,16 +56,16 @@ in {
   config = mkIf cfg.enable {
     home.packages = [pruneScript];
 
-    systemd.user.timers.node-modules-gc = {
+    systemd.user.timers.dustpan = {
       Unit.Description = "Scheduled cleanup of build/dependency folders";
       Timer.OnCalendar = cfg.frequency;
       Timer.Persistent = true;
       Install.WantedBy = ["timers.target"];
     };
 
-    systemd.user.services.node-modules-gc = {
+    systemd.user.services.dustpan = {
       Unit.Description = "Run build/dependency folder pruning";
-      Service.ExecStart = "${pruneScript}/bin/node-modules-gc";
+      Service.ExecStart = "${pruneScript}/bin/dustpan";
     };
   };
 }

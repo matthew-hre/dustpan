@@ -1,4 +1,4 @@
-# node-modules-gc
+# dustpan
 
 A Home Manager module that prunes build and dependency folders (like `node_modules/`, `target/`, etc.) older than N days, automatically, on a timer.
 
@@ -7,10 +7,10 @@ A Home Manager module that prunes build and dependency folders (like `node_modul
 Add the following to your flake:
 
 ```nix
-inputs.node-modules-gc.url = "github:matthew-hre/node-modules-gc";
+inputs.dustpan.url = "github:matthew-hre/dustpan";
 
-outputs = { node-modules-gc, ... }: {
-    homeManagerModules.node-modules-gc = node-modules-gc.homeManagerModules.node-modules-gc;
+outputs = { dustpan, ... }: {
+    homeManagerModules.dustpan = dustpan.homeManagerModules.dustpan;
 };
 ```
 
@@ -19,10 +19,20 @@ And use it in your Home Manager configuration:
 ```nix
 {inputs, ...}: {
     imports = [
-        inputs.node-modules-gc.homeManagerModules.node-modules-gc
+        inputs.dustpan.homeManagerModules.dustpan
     ];
 
-    services.nodeModules.gc = {
+    services.dustpan = {
+        enable = true;
+        directories = [ "$HOME/dev" "$HOME/Projects" ];
+        foldersToClean = [ "node_modules" "__pycache__" "target" ".cache" ];
+```nix
+{inputs, ...}: {
+    imports = [
+        inputs.dustpan.homeManagerModules.dustpan
+    ];
+
+    services.dustpan = {
         enable = true;
         directories = [ "$HOME/dev" "$HOME/Projects" ];
         foldersToClean = [ "node_modules" "__pycache__" "target" ".cache" ];
@@ -45,7 +55,7 @@ And use it in your Home Manager configuration:
 A systemd timer and service is created to periodically run a cleanup. Logs are visible in the journal:
 
 ```bash
-journalctl --user -u node-modules-gc.service
+journalctl --user -u dustpan.service
 ```
 
 ## Why?
