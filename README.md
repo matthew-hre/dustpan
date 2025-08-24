@@ -24,8 +24,8 @@ And use it in your Home Manager configuration:
 
     services.dustpan = {
         enable = true;
-        directories = [ "$HOME/dev" "$HOME/Projects" ];
-        foldersToClean = [ "node_modules" "__pycache__" "target" ".cache" ];
+        roots = [ "$HOME/dev" "$HOME/Projects" ];
+        targets = [ "node_modules" "__pycache__" "target" ".cache" ];
 ```nix
 {inputs, ...}: {
     imports = [
@@ -34,8 +34,8 @@ And use it in your Home Manager configuration:
 
     services.dustpan = {
         enable = true;
-        directories = [ "$HOME/dev" "$HOME/Projects" ];
-        foldersToClean = [ "node_modules" "__pycache__" "target" ".cache" ];
+        roots = [ "$HOME/dev" "$HOME/Projects" ];
+        targets = [ "node_modules" "__pycache__" "target" ".cache" ];
         olderThanDays = 30;
         frequency = "weekly";
     };
@@ -45,8 +45,8 @@ And use it in your Home Manager configuration:
 ### Options
 
 - `enable`: Enable automatic cleanup of old build/dependency folders (default: `false`).
-- `directories`: Directories to search for folders to clean (default: `["$HOME/projects" "$HOME/Projects", "$HOME/dev"]`).
-- `foldersToClean`: Names of folders to clean up (default: `["node_modules"]`).
+- `roots`: Directories to search for folders to clean (default: `["$HOME/projects" "$HOME/Projects", "$HOME/dev"]`).
+- `targets`: Names of folders to clean up (default: `["node_modules"]`).
 - `olderThanDays`: Remove folders older than this many days (default: `30`).
 - `frequency`: systemd timer OnCalendar value (default: `"weekly"`).
 
