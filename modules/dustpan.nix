@@ -8,12 +8,12 @@ with lib; let
   cfg = config.services.dustpan;
 
   pruneScript = pkgs.writeShellScriptBin "dustpan" ''
-    SEARCH_DIRS=(${concatStringsSep " " cfg.directories})
-    FOLDERS_TO_CLEAN=(${concatStringsSep " " cfg.foldersToClean})
-    
-    for dir in "''${SEARCH_DIRS[@]}"; do
+    ROOTS=(${concatStringsSep " " cfg.roots})
+    TARGETS=(${concatStringsSep " " cfg.targets})
+
+    for dir in "''${ROOTS[@]}"; do
       echo "Pruning in: $dir"
-      for folder in "''${FOLDERS_TO_CLEAN[@]}"; do
+      for folder in "''${TARGETS[@]}"; do
         echo "  Looking for $folder folders..."
         find "$dir" -type d -name "$folder" -prune -mtime +${toString cfg.olderThanDays} \
           -print -exec rm -rf {} +
@@ -21,6 +21,15 @@ with lib; let
     done
   '';
 in {
+  imports = [
+    (lib.mkRenamedOptionModule
+      ["services" "dustpan" "directories"]
+      ["services" "dustpan" "roots"])
+    (lib.mkRenamedOptionModule
+      ["services" "dustpan" "foldersToClean"]
+      ["services" "dustpan" "targets"])
+  ];
+
   options.services.dustpan = {
     enable = mkOption {
       type = types.bool;
@@ -28,16 +37,16 @@ in {
       description = "Enable automatic cleanup of old build/dependency folders";
     };
 
-    directories = mkOption {
+    roots = mkOption {
       type = types.listOf types.str;
       default = ["$HOME/projects" "$HOME/Projects" "$HOME/dev"];
-      description = "Directories to search for folders to clean";
+      description = "Root directories to search within.";
     };
 
-    foldersToClean = mkOption {
+    targets = mkOption {
       type = types.listOf types.str;
       default = ["node_modules"];
-      description = "Names of folders to clean up (e.g., node_modules, __pycache__, target, .cache)";
+      description = "Folder names to delete (e.g., node_modules, __pycache__, target, .cache).";
     };
 
     olderThanDays = mkOption {
