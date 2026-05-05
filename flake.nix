@@ -9,7 +9,9 @@
     nixpkgs,
     home-manager,
     ...
-  }: {
-    homeManagerModules.dustpan = import ./modules/dustpan.nix;
-  };
+  }:
+    builtins.warn "This flake has moved to Tangled. Update your input to: git+https://tangled.org/matthew-hre.com/dustpan"
+    {
+      homeManagerModules.dustpan = import ./modules/dustpan.nix;
+    };
 }
