@@ -7,7 +7,7 @@ A Home Manager module that prunes build and dependency folders (like `node_modul
 Add the following to your flake:
 
 ```nix
-inputs.dustpan.url = "github:matthew-hre/dustpan";
+inputs.dustpan.url = "git+https://tangled.org/matthew-hre.com/dustpan";
 
 outputs = { dustpan, ... }: {
     homeManagerModules.dustpan = dustpan.homeManagerModules.dustpan;
