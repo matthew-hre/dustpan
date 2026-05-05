@@ -1,5 +1,8 @@
 # dustpan
 
+> [!WARNING]
+> This flake has moved! It now lives on [Tangled](https://tangled.org/matthew-hre.com/dustpan).
+
 A Home Manager module that prunes build and dependency folders (like `node_modules/`, `target/`, etc.) older than N days, automatically, on a timer.
 
 ## Install and Usage
